@@ -1,0 +1,40 @@
+{
+  "name": "whatsapp-hubspot-calling-integration",
+  "version": "1.0.0",
+  "description": "WhatsApp Business Calling integration with HubSpot using Twilio, WebRTC, and Calling Extensions SDK",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "test:e2e": "cd tests && npm run test:e2e",
+    "setup-hubspot-sdk": "git clone https://github.com/HubSpot/calling-extensions-sdk.git hubspot-sdk"
+  },
+  "keywords": [
+    "whatsapp",
+    "hubspot",
+    "twilio",
+    "webrtc",
+    "calling",
+    "integration"
+  ],
+  "author": "Sagar Gurav",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "backend",
+    "frontend",
+    "tests"
+  ]
+}
