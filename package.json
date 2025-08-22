@@ -1,40 +1,63 @@
 {
   "name": "whatsapp-hubspot-calling-integration",
   "version": "1.0.0",
-  "description": "WhatsApp Business Calling integration with HubSpot using Twilio, WebRTC, and Calling Extensions SDK",
+  "description": "A comprehensive solution for integrating WhatsApp Business Calling with HubSpot",
   "main": "index.js",
   "scripts": {
-    "install:all": "npm run install:backend && npm run install:frontend",
-    "install:backend": "cd backend && npm install",
-    "install:frontend": "cd frontend && npm install",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm start",
     "build": "npm run build:backend && npm run build:frontend",
     "build:backend": "cd backend && npm run build",
     "build:frontend": "cd frontend && npm run build",
-    "test": "npm run test:backend && npm run test:frontend",
+    "start": "cd backend && npm start",
+    "test": "./scripts/test.sh",
     "test:backend": "cd backend && npm test",
     "test:frontend": "cd frontend && npm test",
     "test:e2e": "cd tests && npm run test:e2e",
-    "setup-hubspot-sdk": "git clone https://github.com/HubSpot/calling-extensions-sdk.git hubspot-sdk"
+    "test:coverage": "npm run test:backend -- --coverage && npm run test:frontend -- --coverage",
+    "lint": "npm run lint:backend && npm run lint:frontend",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:fix": "npm run lint:backend -- --fix && npm run lint:frontend -- --fix",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ../tests && npm install",
+    "setup-hubspot-sdk": "git clone https://github.com/HubSpot/calling-extensions-sdk.git hubspot-sdk || echo 'SDK already exists'",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up",
+    "docker:prod": "docker-compose up --build -d",
+    "docker:down": "docker-compose down",
+    "backup": "./scripts/backup.sh",
+    "restore": "./scripts/restore.sh",
+    "deploy": "./scripts/deploy.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sagar-jg/whatsapp-hubspot-calling-integration.git"
   },
   "keywords": [
     "whatsapp",
     "hubspot",
+    "calling",
     "twilio",
     "webrtc",
-    "calling",
-    "integration"
+    "integration",
+    "crm",
+    "voip",
+    "communication"
   ],
-  "author": "Sagar Gurav",
+  "author": "Sagar Gurav <sagar.jg@example.com>",
   "license": "MIT",
-  "devDependencies": {
-    "concurrently": "^8.2.2"
+  "bugs": {
+    "url": "https://github.com/sagar-jg/whatsapp-hubspot-calling-integration/issues"
   },
-  "workspaces": [
-    "backend",
-    "frontend",
-    "tests"
-  ]
+  "homepage": "https://github.com/sagar-jg/whatsapp-hubspot-calling-integration#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.1",
+    "eslint": "^8.48.0",
+    "prettier": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
 }
