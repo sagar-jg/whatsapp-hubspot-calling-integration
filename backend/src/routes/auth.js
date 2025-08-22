@@ -1,6 +1,6 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const rateLimit = require('../middleware/rateLimiter');
+const rateLimiters = require('../middleware/rateLimiter');
 const { verifyToken } = require('../middleware/auth');
 const hubspotService = require('../services/hubspotService');
 const logger = require('../utils/logger');
@@ -8,15 +8,38 @@ const { v4: uuidv4 } = require('uuid');
 
 const router = express.Router();
 
+// Custom URL validator that allows localhost in development
+const validateRedirectUri = (value) => {
+  // Allow localhost URLs in development
+  if (process.env.NODE_ENV === 'development' && value.includes('localhost')) {
+    return /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/.*)?$/.test(value);
+  }
+  
+  // For production, require HTTPS and valid domain
+  if (process.env.NODE_ENV === 'production') {
+    return /^https:\/\/[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z]{2,}(\/.*)?$/.test(value);
+  }
+  
+  // For other environments, use basic URL validation
+  try {
+    new URL(value);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 /**
  * @route POST /api/auth/hubspot/oauth-url
  * @desc Generate HubSpot OAuth authorization URL
  * @access Public
  */
 router.post('/hubspot/oauth-url',
-  rateLimit.auth,
+  [rateLimiters.auth],
   [
-    body('redirectUri').isURL().withMessage('Valid redirect URI is required'),
+    body('redirectUri')
+      .custom(validateRedirectUri)
+      .withMessage('Valid redirect URI is required'),
     body('state').optional().isString()
   ],
   async (req, res) => {
@@ -34,7 +57,7 @@ router.post('/hubspot/oauth-url',
       
       const oauthUrl = hubspotService.generateOAuthUrl(redirectUri, authState);
       
-      logger.info('Generated HubSpot OAuth URL');
+      logger.info('Generated HubSpot OAuth URL', { redirectUri });
       
       res.json({
         success: true,
@@ -58,10 +81,12 @@ router.post('/hubspot/oauth-url',
  * @access Public
  */
 router.post('/hubspot/callback',
-  rateLimit.auth,
+  [rateLimiters.auth],
   [
     body('code').notEmpty().withMessage('Authorization code is required'),
-    body('redirectUri').isURL().withMessage('Valid redirect URI is required'),
+    body('redirectUri')
+      .custom(validateRedirectUri)
+      .withMessage('Valid redirect URI is required'),
     body('state').optional().isString()
   ],
   async (req, res) => {
@@ -76,7 +101,7 @@ router.post('/hubspot/callback',
 
       const { code, redirectUri, state } = req.body;
       
-      logger.info('Processing HubSpot OAuth callback');
+      logger.info('Processing HubSpot OAuth callback', { state });
       
       // Exchange code for tokens
       const tokens = await hubspotService.exchangeCodeForTokens(code, redirectUri);
