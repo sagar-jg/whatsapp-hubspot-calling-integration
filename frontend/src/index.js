@@ -9,8 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import App from './App';
 import theme from './theme';
 import { AuthProvider } from './contexts/AuthContext';
-import { CallProvider } from './contexts/CallContext';
 import { SocketProvider } from './contexts/SocketContext';
+import { CallProvider } from './contexts/CallContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

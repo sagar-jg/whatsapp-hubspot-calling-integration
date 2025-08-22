@@ -5,14 +5,36 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="WhatsApp HubSpot Calling Integration" />
-    <title>WhatsApp HubSpot Calling</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="WhatsApp HubSpot Calling Integration - Make WhatsApp calls directly from HubSpot" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <!-- Material-UI Roboto Font -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    
+    <!-- Material-UI Icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    
+    <title>WhatsApp HubSpot Calling Integration</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    
+    <!-- HubSpot Calling Extensions SDK will be loaded here -->
+    <script>
+      // Global configuration for the application
+      window.APP_CONFIG = {
+        apiUrl: process.env.REACT_APP_API_URL || 'http://localhost:3000',
+        websocketUrl: process.env.REACT_APP_WEBSOCKET_URL || 'ws://localhost:3000',
+        hubspotAppId: process.env.REACT_APP_HUBSPOT_APP_ID
+      };
+    </script>
   </body>
 </html>
