@@ -30,7 +30,7 @@ import {
   TableRow
 } from '@mui/material';
 import {
-  HubSpot as HubSpotIcon,
+  Business as HubSpotIcon,
   Link as LinkIcon,
   LinkOff as LinkOffIcon,
   Phone as PhoneIcon,

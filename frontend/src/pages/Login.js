@@ -14,7 +14,7 @@ import {
   StepContent
 } from '@mui/material';
 import {
-  HubSpot as HubSpotIcon,
+  Business as HubSpotIcon,
   Phone as PhoneIcon,
   Check as CheckIcon
 } from '@mui/icons-material';
